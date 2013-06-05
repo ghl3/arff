@@ -359,5 +359,26 @@ class Writer(_LineWriter):
     
     def close(self):
         self.fhand.close()
-        
-        
+
+
+def load_as_dataframe(fname):
+    """
+    Create a Pandas DataFrame from an arff file
+    """
+    try:
+        from pandas import DataFrame
+    except ImportError:
+        print "Error when trying to import Pandas DataFrame.  Returning None"
+        return None
+
+    arff_file = open(fname)
+    reader = Reader(arff_file)
+
+    # First, get the attributes
+    rows = []
+    for row in reader:
+        rows.append(list(row))
+    attributes = [x.name for x in reader.fields]
+
+    # Create the DataFrame
+    return DataFrame(rows, columns=attributes)
