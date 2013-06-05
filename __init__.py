@@ -183,6 +183,8 @@ class _ParsedNominal:
     def parse(self, text):
         if text.strip('\'"') in self.enum:
             return text
+        elif text=='?':
+            return None
         else:
             raise ValueError("'%s' is not in {%s}" % (text, self.enum))
 
@@ -191,6 +193,7 @@ class _SimpleType:
         self.name = name
         self.type = ARFF_TYPES[type_text]
     def parse(self, text):
+        if text == '?': return None
         return self.type(text)
 
 
